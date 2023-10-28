@@ -28,4 +28,13 @@ class CuentaTest {
         assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0);
         assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
     }
+
+    @Test
+    void testReferenciaCuenta() {
+        Cuenta cuenta = new Cuenta("John Doe", new BigDecimal("8900.9997"));
+        Cuenta cuenta2 = new Cuenta("John Doe", new BigDecimal("8900.9997"));
+
+//        assertNotEquals(cuenta2, cuenta);
+        assertEquals(cuenta2, cuenta);
+    }
 }
