@@ -86,7 +86,7 @@ class CuentaTest {
 
     @Test
     void testRelacionBancoCuentas() {
-        Cuenta cuenta1 = new Cuenta("John Doe", new BigDecimal("2500"));
+        Cuenta cuenta1 = new Cuenta("Jhon Doe", new BigDecimal("2500"));
         Cuenta cuenta2 = new Cuenta("Alejandro", new BigDecimal("1500.8989"));
 
         Banco banco = new Banco();
@@ -99,5 +99,10 @@ class CuentaTest {
         assertEquals("3000", cuenta1.getSaldo().toString());
 
         assertEquals(2, banco.getCuentas().size());
+        assertEquals("Banco del Estado", cuenta1.getBanco().getNombre());
+        assertEquals("Alejandro", banco.getCuentas().stream()
+                .filter(c -> c.getPersona().equals("Alejandro"))
+                .findFirst().get().getPersona());
+        assertTrue(banco.getCuentas().stream().anyMatch(c -> c.getPersona().equals("Alejandro")));
     }
 }
