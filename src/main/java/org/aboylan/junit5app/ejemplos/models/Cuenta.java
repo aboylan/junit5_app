@@ -1,5 +1,7 @@
 package org.aboylan.junit5app.ejemplos.models;
 
+import org.aboylan.junit5app.ejemplos.exceptions.DineroInsuficienteException;
+
 import java.math.BigDecimal;
 
 public class Cuenta {
@@ -28,7 +30,11 @@ public class Cuenta {
     }
 
     public void debito(BigDecimal monto) {
-        this.saldo = this.saldo.subtract(monto);
+        BigDecimal nuevoSaldo = this.saldo.subtract(monto);
+        if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
+            throw new DineroInsuficienteException("Dinero Insuficiente");
+        }
+        this.saldo = nuevoSaldo;
     }
 
     public void credito(BigDecimal monto) {
