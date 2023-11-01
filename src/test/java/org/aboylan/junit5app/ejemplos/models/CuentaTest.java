@@ -95,14 +95,15 @@ class CuentaTest {
         banco.setNombre("Banco del Estado");
 
         banco.transferir(cuenta2, cuenta1, new BigDecimal("500"));
-        assertEquals("1000.8989", cuenta2.getSaldo().toString());
-        assertEquals("3000", cuenta1.getSaldo().toString());
-
-        assertEquals(2, banco.getCuentas().size());
-        assertEquals("Banco del Estado", cuenta1.getBanco().getNombre());
-        assertEquals("Alejandro", banco.getCuentas().stream()
-                .filter(c -> c.getPersona().equals("Alejandro"))
-                .findFirst().get().getPersona());
-        assertTrue(banco.getCuentas().stream().anyMatch(c -> c.getPersona().equals("Alejandro")));
+        assertAll(
+                () -> assertEquals("1000.8989", cuenta2.getSaldo().toString()),
+                () -> assertEquals("3000", cuenta1.getSaldo().toString()),
+                () -> assertEquals(2, banco.getCuentas().size()),
+                () -> assertEquals("Banco del Estado", cuenta1.getBanco().getNombre()),
+                () -> assertEquals("Alejandro", banco.getCuentas().stream()
+                        .filter(c -> c.getPersona().equals("Alejandro"))
+                        .findFirst().get().getPersona()),
+                () -> assertTrue(banco.getCuentas().stream().anyMatch(c -> c.getPersona().equals("Alejandro")))
+        );
     }
 }
