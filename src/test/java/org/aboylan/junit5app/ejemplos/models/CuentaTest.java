@@ -12,15 +12,16 @@ class CuentaTest {
 
     @Test
     void testNombreCuenta() {
-        Cuenta cuenta = new Cuenta("Alejandro", new BigDecimal("1000.12345"));
+        Cuenta cuenta = new Cuenta("Alejandro GF", new BigDecimal("1000.12345"));
 //        cuenta.setPersona("Alejandro");
 
         String esperado = "Alejandro";
         String real = cuenta.getPersona();
 
-        assertNotNull(real);
-        assertEquals(esperado, real);
-        assertTrue(real.equals("Alejandro"));
+        assertNotNull(real, () -> "la cuenta no puede ser nula");
+        assertEquals(esperado, real, () -> "el nombre de la cuenta no es el que se esperaba: se esperaba " + esperado
+                + " sin embargo fue " + real);
+        assertTrue(real.equals("Alejandro"), () -> "nombre cuenta esperada debe ser igual a la real");
     }
 
     @Test
@@ -96,9 +97,12 @@ class CuentaTest {
 
         banco.transferir(cuenta2, cuenta1, new BigDecimal("500"));
         assertAll(
-                () -> assertEquals("1000.8989", cuenta2.getSaldo().toString()),
-                () -> assertEquals("3000", cuenta1.getSaldo().toString()),
-                () -> assertEquals(2, banco.getCuentas().size()),
+                () -> assertEquals("1000.8989", cuenta2.getSaldo().toPlainString(),
+                        () -> "el valor del saldo de la cuenta2 no es el esperado"),
+                () -> assertEquals("3000", cuenta1.getSaldo().toString(),
+                        () -> "el valor del saldo de la cuenta1 no es el esperado"),
+                () -> assertEquals(2, banco.getCuentas().size(),
+                        () -> "el banco no tiene las cuentas esperadas"),
                 () -> assertEquals("Banco del Estado", cuenta1.getBanco().getNombre()),
                 () -> assertEquals("Alejandro", banco.getCuentas().stream()
                         .filter(c -> c.getPersona().equals("Alejandro"))
