@@ -2,8 +2,10 @@ package org.aboylan.junit5app.ejemplos.models;
 
 import org.aboylan.junit5app.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.*;
 
 import java.math.BigDecimal;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -134,5 +136,69 @@ class CuentaTest {
                         .findFirst().get().getPersona()),
                 () -> assertTrue(banco.getCuentas().stream().anyMatch(c -> c.getPersona().equals("Alejandro")))
         );
+    }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    void testSoloWindows() {
+
+    }
+
+    @Test
+    @EnabledOnOs({OS.LINUX, OS.MAC})
+    void testSoloLinuxMac() {
+
+    }
+
+    @Test
+    @DisabledOnOs(OS.WINDOWS)
+    void testNoWindows() {
+
+    }
+
+    @Test
+    @EnabledOnJre(JRE.JAVA_8)
+    void soloJdk8() {
+    }
+
+    @Test
+    @EnabledOnJre(JRE.JAVA_17)
+    void soloJdk17() {
+    }
+
+    @Test
+    @DisabledOnJre(JRE.JAVA_17)
+    void testNoJdk17() {
+    }
+
+    @Test
+    void imprimirSystemProperties() {
+        Properties properties = System.getProperties();
+        properties.forEach((k, v)-> System.out.println(k + ":" + v));
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "java.version", matches = ".*17.*")
+    void testJavaVersion() {
+    }
+
+    @Test
+    @DisabledIfSystemProperty(named = "os.arch", matches = ".*32.*")
+    void testSolo64() {
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "os.arch", matches = ".*32.*")
+    void testNo64() {
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "user.name", matches = "orfeo")
+    void testUsername() {
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "ENV", matches = "dev")
+    void testDev() {
     }
 }
